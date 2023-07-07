@@ -49,8 +49,7 @@ import Layout from "../layouts/Layout.astro";
 <script>
 	const handleCopy = () => {
 		const password = (document.getElementById("password") as HTMLInputElement)
-			.innerText;
-		console.log(password);
+			.value;
 		navigator.clipboard.writeText(password);
 	};
 
