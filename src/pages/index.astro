@@ -51,7 +51,7 @@ import Layout from "../layouts/Layout.astro";
 		const password = (document.getElementById("password") as HTMLInputElement)
 			.innerText;
 		console.log(password);
-		navigator.clipboard.writeText("password");
+		navigator.clipboard.writeText(password);
 	};
 
 	(document.getElementById("copy") as HTMLButtonElement).addEventListener(
