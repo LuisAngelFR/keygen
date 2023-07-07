@@ -1,0 +1,205 @@
+---
+import Switch from "../components/switch.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Keygen - Luis Angel Farias Ruiz">
+	<main>
+		<div class="content">
+			<h3>Keygen Password Generator</h3>
+			<div class="card">
+				<div class="password_container">
+					<input
+						type="text"
+						id="password"
+						class="password"
+						value="Password"
+						readonly
+					/>
+					<button id="copy" class="btn">Copy</button>
+				</div>
+				<div class="fields">
+					<div class="field">
+						<label for="length">Length</label>
+						<input type="number" id="length" min="8" max="64" value="16" />
+					</div>
+					<div class="field">
+						<label for="uppercase">Uppercase</label>
+						<Switch id="uppercase" checked />
+					</div>
+					<div class="field">
+						<label for="lowercase">Lowercase</label>
+						<Switch id="lowercase" checked />
+					</div>
+					<div class="field">
+						<label for="numbers">Numbers</label>
+						<Switch id="numbers" checked />
+					</div>
+					<div class="field">
+						<label for="symbols">Symbols</label>
+						<Switch id="symbols" />
+					</div>
+				</div>
+				<button id="generate" class="gen_btn btn">Generate</button>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<script>
+	const handleCopy = () => {
+		const password = (document.getElementById("password") as HTMLInputElement)
+			.innerText;
+		console.log(password);
+		navigator.clipboard.writeText("password");
+	};
+
+	(document.getElementById("copy") as HTMLButtonElement).addEventListener(
+		"click",
+		handleCopy
+	);
+
+	function generatePassword() {
+		const length = Number.parseFloat(
+			(document.getElementById("length") as HTMLInputElement).value
+		);
+		const uppercase = (document.getElementById("uppercase") as HTMLInputElement)
+			.checked;
+		const lowercase = (document.getElementById("lowercase") as HTMLInputElement)
+			.checked;
+		const numbers = (document.getElementById("numbers") as HTMLInputElement)
+			.checked;
+		const symbols = (document.getElementById("symbols") as HTMLInputElement)
+			.checked;
+
+		const password = generate(length, uppercase, lowercase, numbers, symbols);
+
+		(document.getElementById("password") as HTMLInputElement).value = password;
+	}
+
+	const generate = (
+		length: number,
+		uppercase: boolean,
+		lowercase: boolean,
+		numbers: boolean,
+		symbols: boolean
+	) => {
+		let password = "";
+
+		let characters = "";
+
+		if (uppercase) {
+			characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		}
+
+		if (lowercase) {
+			characters += "abcdefghijklmnopqrstuvwxyz";
+		}
+
+		if (numbers) {
+			characters += "0123456789";
+		}
+
+		if (symbols) {
+			characters += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+		}
+
+		for (let i = 0; i < length; i++) {
+			password += characters.charAt(
+				Math.floor(Math.random() * characters.length)
+			);
+		}
+
+		return password;
+	};
+
+	(document.getElementById("generate") as HTMLButtonElement).addEventListener(
+		"click",
+		generatePassword
+	);
+</script>
+
+<style scoped>
+	main {
+		display: flex;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.content {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	h3 {
+		margin-bottom: 1rem;
+		font-weight: 600;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: min(400px, 90%);
+		padding: 1rem;
+		border-radius: 0.5rem;
+		border: 2px solid #cccccc;
+	}
+
+	.password_container {
+		display: flex;
+		width: 100%;
+		align-items: center;
+	}
+
+	.password {
+		flex: 1;
+		padding: 0.5rem;
+		border: 2px solid #cccccc;
+		border-radius: 0.5rem;
+		outline: none;
+	}
+
+	.btn {
+		margin-left: 0.5rem;
+		padding: 0.5rem 1rem;
+		border: 2px solid #cccccc;
+		border-radius: 0.5rem;
+		background-color: #ffffff;
+		cursor: pointer;
+	}
+
+	.gen_btn {
+		margin-top: 1rem;
+	}
+
+	.fields {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin: 1rem 0;
+	}
+
+	.field {
+		display: flex;
+		align-items: center;
+		margin: 0.5rem 0;
+	}
+
+	label {
+		width: 100%;
+		margin-right: 0.5rem;
+	}
+
+	input[type="number"] {
+		width: 100%;
+		padding: 0.5rem;
+		border: 2px solid #cccccc;
+		border-radius: 0.5rem;
+		outline: none;
+	}
+</style>
